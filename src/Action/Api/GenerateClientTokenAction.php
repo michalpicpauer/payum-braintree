@@ -38,8 +38,6 @@ class GenerateClientTokenAction extends BaseApiAwareAction
      */
     public function supports($request)
     {
-        return
-            $request instanceof GenerateClientToken;
-        ;
+        return $request instanceof GenerateClientToken;
     }
 }

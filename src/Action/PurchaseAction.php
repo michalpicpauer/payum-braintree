@@ -1,6 +1,8 @@
 <?php
+
 namespace Payum\Braintree\Action;
 
+use Payum\Braintree\Request\Purchase;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayAwareInterface;
@@ -16,7 +18,7 @@ use Payum\Braintree\Reply\Api\PaymentMethodNonceArray;
 use Payum\Braintree\Reply\Api\TransactionResultArray;
 use Braintree\Transaction;
 
-class AuthorizeAction implements ActionInterface, GatewayAwareInterface
+class PurchaseAction implements ActionInterface, GatewayAwareInterface
 {
     use GatewayAwareTrait;
 
@@ -126,7 +128,7 @@ class AuthorizeAction implements ActionInterface, GatewayAwareInterface
         }
 
         $saleOptions = [
-            'submitForSettlement' => false
+            'submitForSettlement' => true
         ];
 
         if ($details->offsetExists('paymentMethodNonce')) {
@@ -183,7 +185,7 @@ class AuthorizeAction implements ActionInterface, GatewayAwareInterface
     public function supports($request)
     {
         return
-            $request instanceof Authorize &&
+            $request instanceof Purchase &&
             $request->getModel() instanceof \ArrayAccess
         ;
     }

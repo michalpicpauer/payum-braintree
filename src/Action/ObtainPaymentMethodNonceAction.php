@@ -59,7 +59,7 @@ class ObtainPaymentMethodNonceAction implements ActionInterface, GatewayAwareInt
             $request->setResponse($paymentMethodNonce);
             return;
         }
-        
+
         if (false == $details->offsetExists('clientToken')) {
             $this->generateClientToken($details);
         }
