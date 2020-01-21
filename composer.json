@@ -1,5 +1,5 @@
 {
-    "name": "nfq-eta/payum-braintree",
+    "name": "michalpicpauer/payum-braintree",
     "type": "library",
     "description": "A Payum extension for Braintree gateway integration",
     "keywords": ["payment", "braintree", "payum"],
