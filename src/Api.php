@@ -1,4 +1,5 @@
 <?php
+
 namespace Payum\Braintree;
 
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -10,59 +11,62 @@ use Braintree\Transaction;
 class Api
 {
     /**
-     * @var array
+     * @var ArrayObject
      */
     protected $options = [];
 
     /**
-     * @param array               $options
+     * @param ArrayObject $options
      *
      * @throws \Payum\Core\Exception\InvalidArgumentException if an option is invalid
      */
-    public function __construct(array $options)
+    public function __construct(ArrayObject $options)
     {
         $this->options = $options;
 
-        $this->initialise();
-    }
-
-    private function initialise()
-    {
         Configuration::reset();
 
         $environment = 'sandbox';
 
-        if (array_key_exists('environment', $this->options) && null !== $this->options['environment']) {
+        if (isset($this->options['environment'])) {
             $environment = $this->options['environment'];
-        }
-        else if (array_key_exists('sandbox', $this->options) && null !== $this->options['sandbox']) {
+        } elseif (isset($this->options['sandbox'])) {
             $environment = !$this->options['sandbox'] ? 'production' : 'sandbox';
         }
 
         Configuration::environment($environment);
-
         Configuration::merchantId($this->options['merchantId']);
         Configuration::publicKey($this->options['publicKey']);
         Configuration::privateKey($this->options['privateKey']);
     }
 
-    public function generateClientToken($params)
+    /**
+     * Generates client token.
+     *
+     * @param array $params
+     * @return string
+     */
+    public function generateClientToken(array $params = [])
     {
-        if (array_key_exists('merchantAccountId', $this->options) && null !== $this->options['merchantAccountId']) {
+        if (isset($this->options['merchantAccountId'])) {
             $params['merchantAccountId'] = $this->options['merchantAccountId'];
         }
 
         return ClientToken::generate($params);
     }
-    
-    public function findPaymentMethodNonce($nonceString)
+
+    /**
+     * @param string $nonceString
+     * @return PaymentMethodNonce
+     */
+    public function findPaymentMethodNonce(string $nonceString)
     {
         return PaymentMethodNonce::find($nonceString);
     }
-    
+
     public function sale(ArrayObject $params)
     {
-        $options = $params->offsetExists('options') ? $params['options'] : array();
+        $options = $params->offsetExists('options') ? $params['options'] : [];
 
         if (null !== $this->options['storeInVault'] && !isset($options['storeInVault'])) {
             $options['storeInVault'] = $this->options['storeInVault'];
@@ -72,15 +76,15 @@ class Api
             $options['storeInVaultOnSuccess'] = $this->options['storeInVaultOnSuccess'];
         }
 
-        if (null !== $this->options['addBillingAddressToPaymentMethod'] && 
-            !isset($options['addBillingAddressToPaymentMethod']) && 
+        if (null !== $this->options['addBillingAddressToPaymentMethod'] &&
+            !isset($options['addBillingAddressToPaymentMethod']) &&
             $params->offsetExists('billing')) {
 
             $options['addBillingAddressToPaymentMethod'] = $this->options['addBillingAddressToPaymentMethod'];
         }
 
-        if (null !== $this->options['storeShippingAddressInVault'] && 
-            !isset($options['storeShippingAddressInVault']) && 
+        if (null !== $this->options['storeShippingAddressInVault'] &&
+            !isset($options['storeShippingAddressInVault']) &&
             $params->offsetExists('shipping')) {
 
             $options['storeShippingAddressInVault'] = $this->options['storeShippingAddressInVault'];

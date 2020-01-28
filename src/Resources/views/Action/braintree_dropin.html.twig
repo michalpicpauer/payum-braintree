@@ -1,0 +1,28 @@
+{% extends layout ?: "@PayumCore/layout.html.twig" %}
+
+{% block payum_body %}
+
+    <div id="dropin-container"></div>
+    <button id="submit-button">Request payment method</button>
+
+{% endblock %}
+
+{% block payum_vendor_javascripts %}
+    <script src="https://js.braintreegateway.com/web/dropin/1.21.0/js/dropin.min.js"></script>
+    <script>
+        var button = document.querySelector('#submit-button');
+
+        braintree.dropin.create({
+            authorization: '{{ clientToken }}',
+            container: '#dropin-container'
+        }, function (createErr, instance) {
+            button.addEventListener('click', function () {
+                instance.requestPaymentMethod(function (err, payload) {
+                    {% block payum_braintree_nonce %}
+                        // Submit payload.nonce to your server
+                    {% endblock %}
+                });
+            });
+        });
+    </script>
+{% endblock %}

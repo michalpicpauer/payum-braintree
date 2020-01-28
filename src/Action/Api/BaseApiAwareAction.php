@@ -10,6 +10,9 @@ abstract class BaseApiAwareAction implements ActionInterface, ApiAwareInterface
 {
     use ApiAwareTrait;
 
+    /** @var Api */
+    protected $api;
+
     public function __construct()
     {
         $this->apiClass = Api::class;

@@ -8,8 +8,8 @@ class PaymentMethodNonceArray
 {
     public static function toArray(PaymentMethodNonce $object)
     {
-        if (null == $object) {
-            return;
+        if (null === $object) {
+            return [];
         }
 
         $array = ArrayUtils::extractPropertiesToArray($object, [
@@ -22,7 +22,7 @@ class PaymentMethodNonceArray
                 'enrolled', 'liabilityShiftPossible', 'liabilityShifted', 'status'
             ]);
         }
-        
+
         if (array_key_exists('details', $array)) {
 
             $array['details'] = ArrayUtils::extractPropertiesToArray($array['details'], [

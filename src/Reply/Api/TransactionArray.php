@@ -8,8 +8,8 @@ class TransactionArray
 {
     public static function toArray(Transaction $object)
     {
-        if (null == $object) {
-            return;
+        if (null === $object) {
+            return [];
         }
 
         $array = ArrayUtils::extractPropertiesToArray($object, [
@@ -19,12 +19,12 @@ class TransactionArray
             'refundIds', 'refundedTransactionId', 'partialSettlementTransactionIds',
             'authorizedTransactionId', 'settlementBatchId', 'shipping', 'customFields',
             'avsErrorResponseCode', 'avsPostalCodeResponseCode', 'avsStreetAddressResponseCode',
-            'cvvResponseCode', 'gatewayRejectionReason', 'processorAuthorizationCode', 
+            'cvvResponseCode', 'gatewayRejectionReason', 'processorAuthorizationCode',
             'processorResponseCode', 'processorResponseText', 'additionalProcessorResponse',
             'voiceReferralNumber', 'purchaseOrderNumber', 'taxAmount', 'taxExempt', 'creditCard',
             'planId', 'subscriptionId', 'subscription', 'addOns', 'discounts', 'recurring',
             'channel', 'serviceFeeAmount', 'escrowStatus', /*disbursementDetails,*/
-            'paymentInstrumentType', 'processorSettlementResponseCode', 
+            'paymentInstrumentType', 'processorSettlementResponseCode',
             'processorSettlementResponseText', 'threeDSecureInfo' /*, creditCardDetails */
         ]);
 

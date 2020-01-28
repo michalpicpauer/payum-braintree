@@ -21,7 +21,7 @@ class StatusAction implements ActionInterface
 
         $status = $details['status'];
 
-        if (null != $status) {
+        if (null !== $status) {
 
             switch($status) {
 
@@ -44,18 +44,18 @@ class StatusAction implements ActionInterface
                 case 'captured':
 
                     if ($this->hasSuccessfulTransaction($details)) {
-                        $request->markCaptured();                        
+                        $request->markCaptured();
                     }
                     else {
                         $request->markUnknown();
                     }
 
                     return;
-                    
+
                 case 'refunded':
 
                     if ($this->hasSuccessfulTransaction($details)) {
-                        $request->markRefunded();                        
+                        $request->markRefunded();
                     }
                     else {
                         $request->markUnknown();
@@ -73,7 +73,7 @@ class StatusAction implements ActionInterface
         $request->markNew();
     }
 
-    protected function hasSuccessfulTransaction($details) 
+    protected function hasSuccessfulTransaction($details)
     {
         return $details['sale'] && $details['sale']['success'];
     }

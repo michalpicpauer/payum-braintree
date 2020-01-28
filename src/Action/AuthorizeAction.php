@@ -2,16 +2,18 @@
 
 namespace Payum\Braintree\Action;
 
-use Payum\Braintree\Reply\Api\TransactionResultArray;
-use Payum\Braintree\Request\Api\DoSale;
+use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
-use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Core\GatewayAwareInterface;
+use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Authorize;
-use Payum\Core\Request\Capture;
+use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Braintree\Request\Api\DoSale;
+use Payum\Braintree\Reply\Api\TransactionResultArray;
+use Braintree\Transaction;
 
-class CaptureAction extends AbstractSaleAction
+class AuthorizeAction extends AbstractSaleAction
 {
-
     /**
      * {@inheritDoc}
      *
@@ -28,7 +30,7 @@ class CaptureAction extends AbstractSaleAction
         }
 
         $details['saleOptions'] = [
-            'submitForSettlement' => true
+            'submitForSettlement' => false
         ];
 
 
@@ -50,10 +52,10 @@ class CaptureAction extends AbstractSaleAction
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function supports($request)
     {
-        return $request instanceof Capture && $request->getModel() instanceof \ArrayAccess;
+        return $request instanceof Authorize && $request->getModel() instanceof \ArrayAccess;
     }
 }

@@ -16,17 +16,8 @@ use Braintree\Result;
 class AuthorizeActionTest extends GenericActionTest
 {
     protected $actionClass = AuthorizeAction::class;
-    
-    protected $requestClass = Authorize::class;
 
-    /**
-     * @test
-     */
-    public function shouldImplementSetCardholderAuthenticationRequiredMethod()
-    {
-        $this->action->setCardholderAuthenticationRequired(true);
-        $this->action->setCardholderAuthenticationRequired(false);   
-    }
+    protected $requestClass = Authorize::class;
 
     /**
      * @test
@@ -38,65 +29,65 @@ class AuthorizeActionTest extends GenericActionTest
         $gatewayMock
             ->expects($this->at(0))
             ->method('execute')
-            ->with($this->isInstanceOf('Payum\Braintree\Request\ObtainPaymentMethodNonce'))
-            ->will($this->returnCallback(function(ObtainPaymentMethodNonce $request) {
+            ->with($this->isInstanceOf(ObtainPaymentMethodNonce::class))
+            ->willReturnCallback(static function (ObtainPaymentMethodNonce $request) {
                 $request->setResponse('first_nonce');
-            }))
+            })
         ;
 
         $gatewayMock
             ->expects($this->at(1))
             ->method('execute')
-            ->with($this->isInstanceOf('Payum\Braintree\Request\Api\FindPaymentMethodNonce'))
-            ->will($this->returnCallback(function(FindPaymentMethodNonce $request) {
+            ->with($this->isInstanceOf(FindPaymentMethodNonce::class))
+            ->willReturnCallback(static function (FindPaymentMethodNonce $request) {
 
-                    $request->setResponse(PaymentMethodNonce::factory([
-                        'nonce' => 'first_nonce',
-                        'consumed' => false,
-                        'default' => false,
-                        'type' => 'CreditCard',
-                        'details' => [
-                            'cardType' => 'Visa',
-                            'last2' => '11',
-                            'bin' => '123456'
-                        ]
-                    ]));
-            }))
+                $request->setResponse(PaymentMethodNonce::factory([
+                    'nonce' => 'first_nonce',
+                    'consumed' => false,
+                    'default' => false,
+                    'type' => 'CreditCard',
+                    'details' => [
+                        'cardType' => 'Visa',
+                        'last2' => '11',
+                        'bin' => '123456'
+                    ]
+                ]));
+            })
         ;
 
         $gatewayMock
             ->expects($this->at(2))
             ->method('execute')
-            ->with($this->isInstanceOf('Payum\Braintree\Request\ObtainCardholderAuthentication'))
-            ->will($this->returnCallback(function(ObtainCardholderAuthentication $request) {
+            ->with($this->isInstanceOf(ObtainCardholderAuthentication::class))
+            ->willReturnCallback(static function (ObtainCardholderAuthentication $request) {
 
                 $request->setResponse('second_nonce');
-            }))
+            })
         ;
 
         $gatewayMock
             ->expects($this->at(3))
             ->method('execute')
-            ->with($this->isInstanceOf('Payum\Braintree\Request\Api\FindPaymentMethodNonce'))
-            ->will($this->returnCallback(function(FindPaymentMethodNonce $request) {
+            ->with($this->isInstanceOf(FindPaymentMethodNonce::class))
+            ->willReturnCallback(static function (FindPaymentMethodNonce $request) {
 
                 $request->setResponse(PaymentMethodNonce::factory([
-                        'nonce' => 'second_nonce',
-                        'consumed' => false,
-                        'default' => false,
-                        'type' => 'CreditCard',
-                        'details' => [
-                            'cardType' => 'Visa',
-                            'last2' => '11'
-                        ],
-                        'threeDSecureInfo' => [
-                            'enrolled' => 'Y',
-                            'liabilityShiftPossible' => true,
-                            'liabilityShifted' => false,
-                            'status' => 'authenticate_successful'
-                        ]
+                    'nonce' => 'second_nonce',
+                    'consumed' => false,
+                    'default' => false,
+                    'type' => 'CreditCard',
+                    'details' => [
+                        'cardType' => 'Visa',
+                        'last2' => '11'
+                    ],
+                    'threeDSecureInfo' => [
+                        'enrolled' => 'Y',
+                        'liabilityShiftPossible' => true,
+                        'liabilityShifted' => false,
+                        'status' => 'authenticate_successful'
+                    ]
                 ]));
-            }))
+            })
         ;
 
         $gatewayMock
@@ -142,7 +133,7 @@ class AuthorizeActionTest extends GenericActionTest
         $model = iterator_to_array($request->getModel());
 
         $this->assertEquals('authorized', $model['status']);
-        
+
         $this->assertEquals('second_nonce', $model['paymentMethodNonce']);
         $this->assertArrayHasKey('paymentMethodNonceInfo', $model);
 

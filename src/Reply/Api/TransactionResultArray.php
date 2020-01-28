@@ -8,8 +8,8 @@ class TransactionResultArray
 {
     public static function toArray($object)
     {
-        if (null == $object) {
-            return;
+        if (null === $object) {
+            return [];
         }
 
         $array = ArrayUtils::extractPropertiesToArray($object, [
