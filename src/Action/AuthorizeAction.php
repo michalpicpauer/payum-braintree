@@ -2,15 +2,11 @@
 
 namespace Payum\Braintree\Action;
 
-use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
-use Payum\Core\GatewayAwareInterface;
-use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Authorize;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Braintree\Request\Api\DoSale;
 use Payum\Braintree\Reply\Api\TransactionResultArray;
-use Braintree\Transaction;
 
 class AuthorizeAction extends AbstractSaleAction
 {

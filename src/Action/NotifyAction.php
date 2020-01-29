@@ -5,16 +5,16 @@ use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareTrait;
-use Payum\Core\Request\Refund;
+use Payum\Core\Request\Notify;
 
-class RefundAction implements ActionInterface
+class NotifyAction implements ActionInterface
 {
     use GatewayAwareTrait;
 
     /**
      * {@inheritDoc}
      *
-     * @param Refund $request
+     * @param Notify $request
      */
     public function execute($request)
     {
@@ -31,7 +31,7 @@ class RefundAction implements ActionInterface
     public function supports($request)
     {
         return
-            $request instanceof Refund &&
+            $request instanceof Notify &&
             $request->getModel() instanceof \ArrayAccess
         ;
     }

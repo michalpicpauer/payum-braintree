@@ -2,27 +2,41 @@
 
 namespace Payum\Braintree;
 
+use Http\Message\MessageFactory;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Braintree\Configuration;
 use Braintree\ClientToken;
 use Braintree\PaymentMethodNonce;
 use Braintree\Transaction;
+use Payum\Core\HttpClientInterface;
 
 class Api
 {
     /**
-     * @var ArrayObject
+     * @var HttpClientInterface
+     */
+    protected $client;
+
+    /**
+     * @var MessageFactory
+     */
+    protected $messageFactory;
+
+    /**
+     * @var array
      */
     protected $options = [];
 
     /**
-     * @param ArrayObject $options
-     *
-     * @throws \Payum\Core\Exception\InvalidArgumentException if an option is invalid
+     * @param array               $options
+     * @param HttpClientInterface $client
+     * @param MessageFactory      $messageFactory
      */
-    public function __construct(ArrayObject $options)
+    public function __construct(array $options, HttpClientInterface $client, MessageFactory $messageFactory)
     {
         $this->options = $options;
+        $this->client = $client;
+        $this->messageFactory = $messageFactory;
 
         Configuration::reset();
 
@@ -59,7 +73,7 @@ class Api
      * @param string $nonceString
      * @return PaymentMethodNonce
      */
-    public function findPaymentMethodNonce(string $nonceString)
+    public function findPaymentMethodNonce($nonceString)
     {
         return PaymentMethodNonce::find($nonceString);
     }
@@ -98,4 +112,5 @@ class Api
 
         return Transaction::sale((array)$params);
     }
+
 }
