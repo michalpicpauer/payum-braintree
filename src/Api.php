@@ -13,30 +13,13 @@ use Payum\Core\HttpClientInterface;
 class Api
 {
     /**
-     * @var HttpClientInterface
-     */
-    protected $client;
-
-    /**
-     * @var MessageFactory
-     */
-    protected $messageFactory;
-
-    /**
-     * @var array
+     * @var ArrayObject
      */
     protected $options = [];
 
-    /**
-     * @param array               $options
-     * @param HttpClientInterface $client
-     * @param MessageFactory      $messageFactory
-     */
-    public function __construct(array $options, HttpClientInterface $client, MessageFactory $messageFactory)
+    public function __construct(ArrayObject $options)
     {
         $this->options = $options;
-        $this->client = $client;
-        $this->messageFactory = $messageFactory;
 
         Configuration::reset();
 
@@ -62,10 +45,6 @@ class Api
      */
     public function generateClientToken(array $params = [])
     {
-        if (isset($this->options['merchantAccountId'])) {
-            $params['merchantAccountId'] = $this->options['merchantAccountId'];
-        }
-
         return ClientToken::generate($params);
     }
 
@@ -82,33 +61,7 @@ class Api
     {
         $options = $params->offsetExists('options') ? $params['options'] : [];
 
-        if (null !== $this->options['storeInVault'] && !isset($options['storeInVault'])) {
-            $options['storeInVault'] = $this->options['storeInVault'];
-        }
-
-        if (null !== $this->options['storeInVaultOnSuccess'] && !isset($options['storeInVaultOnSuccess'])) {
-            $options['storeInVaultOnSuccess'] = $this->options['storeInVaultOnSuccess'];
-        }
-
-        if (null !== $this->options['addBillingAddressToPaymentMethod'] &&
-            !isset($options['addBillingAddressToPaymentMethod']) &&
-            $params->offsetExists('billing')) {
-
-            $options['addBillingAddressToPaymentMethod'] = $this->options['addBillingAddressToPaymentMethod'];
-        }
-
-        if (null !== $this->options['storeShippingAddressInVault'] &&
-            !isset($options['storeShippingAddressInVault']) &&
-            $params->offsetExists('shipping')) {
-
-            $options['storeShippingAddressInVault'] = $this->options['storeShippingAddressInVault'];
-        }
-
         $params['options'] = $options;
-
-        if (array_key_exists('merchantAccountId', $this->options) && null !== $this->options['merchantAccountId']) {
-            $params['merchantAccountId'] = $this->options['merchantAccountId'];
-        }
 
         return Transaction::sale((array)$params);
     }

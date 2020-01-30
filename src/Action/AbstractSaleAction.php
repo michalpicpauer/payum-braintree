@@ -3,13 +3,10 @@
 namespace Payum\Braintree\Action;
 
 use Braintree\Transaction;
-use Payum\Braintree\Request\Purchase;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
-use Payum\Core\Exception\RequestNotSupportedException;
-use Payum\Core\Request\Capture;
 
 abstract class AbstractSaleAction implements ActionInterface, GatewayAwareInterface
 {

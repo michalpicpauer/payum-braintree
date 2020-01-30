@@ -25,10 +25,9 @@ class AuthorizeAction extends AbstractSaleAction
             return;
         }
 
-        $details['saleOptions'] = [
+        $details['options'] = [
             'submitForSettlement' => false
         ];
-
 
         $saleRequest = new DoSale($details);
         $this->gateway->execute($saleRequest);
@@ -41,7 +40,6 @@ class AuthorizeAction extends AbstractSaleAction
 
         $details->validateNotEmpty([
             'paymentMethodNonce',
-            'paymentMethodNonceInfo',
             'sale',
             'status'
         ]);

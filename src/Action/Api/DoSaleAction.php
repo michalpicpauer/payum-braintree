@@ -58,8 +58,8 @@ class DoSaleAction extends BaseApiAwareAction
             }
         }
 
-        if ($details->offsetExists('saleOptions')) {
-            $requestParams['options'] = $details['saleOptions'];
+        if ($details->offsetExists('options')) {
+            $requestParams['options'] = $details['options'];
         }
 
         return $requestParams;

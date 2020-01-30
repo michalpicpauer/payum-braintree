@@ -1,4 +1,5 @@
 <?php
+
 namespace Payum\Braintree\Action\Api;
 
 use Payum\Core\Exception\LogicException;
@@ -22,8 +23,7 @@ class FindPaymentMethodNonceAction extends BaseApiAwareAction
             $paymentMethodNonce = $this->api->findPaymentMethodNonce($request->getNonceString());
 
             $request->setResponse($paymentMethodNonce);
-        }
-        catch(NotFound $exception) {
+        } catch (NotFound $exception) {
             return;
         }
     }

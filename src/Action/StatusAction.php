@@ -1,4 +1,5 @@
 <?php
+
 namespace Payum\Braintree\Action;
 
 use Payum\Core\Action\ActionInterface;
@@ -23,7 +24,7 @@ class StatusAction implements ActionInterface
 
         if (null !== $status) {
 
-            switch($status) {
+            switch ($status) {
 
                 case 'failed':
 
@@ -34,8 +35,7 @@ class StatusAction implements ActionInterface
 
                     if ($this->hasSuccessfulTransaction($details)) {
                         $request->markAuthorized();
-                    }
-                    else {
+                    } else {
                         $request->markUnknown();
                     }
 
@@ -45,8 +45,7 @@ class StatusAction implements ActionInterface
 
                     if ($this->hasSuccessfulTransaction($details)) {
                         $request->markCaptured();
-                    }
-                    else {
+                    } else {
                         $request->markUnknown();
                     }
 
@@ -56,8 +55,7 @@ class StatusAction implements ActionInterface
 
                     if ($this->hasSuccessfulTransaction($details)) {
                         $request->markRefunded();
-                    }
-                    else {
+                    } else {
                         $request->markUnknown();
                     }
 
@@ -83,9 +81,6 @@ class StatusAction implements ActionInterface
      */
     public function supports($request)
     {
-        return
-            $request instanceof GetStatusInterface &&
-            $request->getModel() instanceof \ArrayAccess
-        ;
+        return $request instanceof GetStatusInterface && $request->getModel() instanceof \ArrayAccess;
     }
 }

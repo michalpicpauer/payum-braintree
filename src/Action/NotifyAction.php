@@ -1,4 +1,5 @@
 <?php
+
 namespace Payum\Braintree\Action;
 
 use Payum\Core\Action\ActionInterface;
@@ -30,9 +31,6 @@ class NotifyAction implements ActionInterface
      */
     public function supports($request)
     {
-        return
-            $request instanceof Notify &&
-            $request->getModel() instanceof \ArrayAccess
-        ;
+        return $request instanceof Notify && $request->getModel() instanceof \ArrayAccess;
     }
 }

@@ -27,10 +27,9 @@ class CaptureAction extends AbstractSaleAction
             return;
         }
 
-        $details['saleOptions'] = [
+        $details['options'] = [
             'submitForSettlement' => true
         ];
-
 
         $saleRequest = new DoSale($details);
         $this->gateway->execute($saleRequest);
@@ -43,7 +42,6 @@ class CaptureAction extends AbstractSaleAction
 
         $details->validateNotEmpty([
             'paymentMethodNonce',
-            'paymentMethodNonceInfo',
             'sale',
             'status'
         ]);
