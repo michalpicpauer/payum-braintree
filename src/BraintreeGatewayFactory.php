@@ -2,6 +2,7 @@
 
 namespace Payum\Braintree;
 
+use Payum\Braintree\Action\Api\CreateCustomerAction;
 use Payum\Braintree\Action\AuthorizeAction;
 use Payum\Braintree\Action\CancelAction;
 use Payum\Braintree\Action\CaptureAction;
@@ -32,6 +33,7 @@ class BraintreeGatewayFactory extends GatewayFactory
             'payum.action.api.generate_client_token' => new GenerateClientTokenAction(),
             'payum.action.api.find_payment_method_nonce' => new FindPaymentMethodNonceAction(),
             'payum.action.api.do_sale' => new DoSaleAction(),
+            'payum.action.api.create_customer' => new CreateCustomerAction(),
         ]);
 
         if (false == $config['payum.api']) {

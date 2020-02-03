@@ -2,6 +2,7 @@
 
 namespace Payum\Braintree;
 
+use Braintree\Customer;
 use Http\Message\MessageFactory;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Braintree\Configuration;
@@ -43,9 +44,20 @@ class Api
      * @param array $params
      * @return string
      */
-    public function generateClientToken(array $params = [])
+    public function generateClientToken(ArrayObject $params)
     {
         return ClientToken::generate($params);
+    }
+
+    /**
+     * Create client.
+     *
+     * @param array $params
+     * @return string
+     */
+    public function createCustomer(ArrayObject $params)
+    {
+        return Customer::create($params);
     }
 
     /**

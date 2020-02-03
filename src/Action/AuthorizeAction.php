@@ -2,6 +2,7 @@
 
 namespace Payum\Braintree\Action;
 
+use Payum\Braintree\Request\Api\CreateCustomer;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Request\Authorize;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -24,6 +25,17 @@ class AuthorizeAction extends AbstractSaleAction
         if ($details->offsetExists('status')) {
             return;
         }
+
+        $details->validateNotEmpty(['paymentMethodNonce']);
+
+        $details['creditCard'] = [
+            'options' => [
+                'verifyCard' => true
+            ]
+        ];
+
+        $customerRequest = new CreateCustomer($details);
+        $this->gateway->execute($customerRequest);
 
         $details['options'] = [
             'submitForSettlement' => false
